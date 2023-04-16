@@ -24,11 +24,10 @@ class PGTrainer:
             trajectory = self.agent.collect_trajectory(policy=self.actor_policy)
             loss = self.estimate_loss_function(trajectory)
             self.update_policy(loss)
-            # Calculate the average reward for each trajectory
-            n_rollouts = self.params['n_rollout'] 
-            rollout_rewards = [sum(sum(r) for r in trajectory['reward'][i*self.params['n_rollout']:(i+1)*self.params['n_rollout']]) for i in range(n_rollouts)]
-            avg_ro_reward = sum(rollout_rewards)/self.params['n_trajectory_per_rollout'];
-
+            # Calculate avg reward for this rollout
+            total_reward = sum([sum(traj_rewards) for traj_rewards in trajectory['reward']])
+            ntr = self.params['n_trajectory_per_rollout']
+            avg_ro_reward = total_reward / ntr
             print(f'End of rollout {ro_idx}: Average trajectory reward is {avg_ro_reward: 0.2f}')
             # Append average rollout reward into a list
             list_ro_reward.append(avg_ro_reward)
