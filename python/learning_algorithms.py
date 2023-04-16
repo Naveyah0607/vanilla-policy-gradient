@@ -87,8 +87,6 @@ class PGPolicy(nn.Module):
         self.policy_net = nn.Sequential(
         nn.Linear(input_size, hidden_dim),
         nn.ReLU(),
-        nn.Linear(hidden_dim, hidden_dim),
-        nn.ReLU(),
         nn.Linear(hidden_dim, output_size),
         nn.Softmax(dim=-1)
         )
